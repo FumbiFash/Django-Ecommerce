@@ -4,7 +4,7 @@
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
     
     <div class="container">
-        <a class="navbar-brand" href="{% url 'store' %}">Furni<span>.</span></a>
+        <a class="navbar-brand" href="{% url 'store' %}">Mill Furniture<span>.</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -19,20 +19,90 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="{% url 'store' %}">Home</a>
                 </li>
-                <li class="active"><a class="nav-link" href="{% url 'store' %}">Shop</a></li>
-                <li><a class="nav-link" href="about.html">About us</a></li>
+                <li><a class="nav-link" href="{% url 'store' %}">Shop</a></li>
+                <li><a class="nav-link" href="{% url 'about' %}">About us</a></li>
                 <li><a class="nav-link" href="{% url 'services' %}">Services</a></li>
-                <li><a class="nav-link" href="blog.html">Blog</a></li>
-                <li><a class="nav-link" href="contact.html">Contact us</a></li>
+                <li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
             </ul>
             
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                <li><a class="nav-link" href="#"><img src="/static/images/user.svg"></a></li>
+                <li>
+                    {% if user.is_authenticated == False %}
+                    <div class = 'dropdown'>
+                    <a class="nav-link dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false" href="">
+                        <img src="/static/images/user.svg" class = "d-block Mx-auto log " id = 'login'>
+                      </a>
+                    
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                    
+                        </ul>
+                      </div>
+                        {% else %}    
+                        
+                        
+                        <div class = 'dropdown'>
+                          <a class="nav-link dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false" href="">
+                              <img src="/static/images/user.svg" class = "d-block Mx-auto log ">
+                            </a>
+                          
+                              <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'logout' %}" id = 'logout'>Logout</a></li>
+                               
+                              </ul>
+                            </div>
+                    
+
+
+                      </div>
+
+                    {% endif %}
+                
+                </li>
                 <p>{{cartitems}}</p>
                 <li><a class="nav-link" href="{% url 'cart' %}"><img src="/static/images/cart.svg"></a></li>
             </ul>
         </div>
     </div>
-        
+
+    <div class="modal" tabindex="-1" role="dialog" id = 'test'>
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Status</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Logged out</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+   
+
 </nav>
 
+<script>
+ 
+  var logoutbtn = document.getElementById('logout')
+  logoutbtn.addEventListener('click', function(){
+    alert('User logged out')
+  })
+
+</script>
+
+<!-- <script>
+  console.log('hey there')
+$('#logout').on('click', function() {
+    $('#test').modal('show')
+  })
+
+</script> -->
+    

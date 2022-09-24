@@ -259,7 +259,7 @@
 		                    </div>
 		                  </div>
 		                </div>
-
+						
 		                <div class="border p-3 mb-3">
 		                  <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsecheque" role="button" aria-expanded="false" aria-controls="collapsecheque">Cheque Payment</a></h3>
 
@@ -269,7 +269,7 @@
 		                    </div>
 		                  </div>
 		                </div>
-
+						
 		                <div class="border p-3 mb-5">
 		                  <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Paypal</a></h3>
 
@@ -284,7 +284,8 @@
 
 							
 
-							 <a href = "{% url 'thankyou' %}"<button  id = 'make-payment'>Proceed To Checkout</button>,
+							 <!-- <a href = "{% url 'thankyou' %}"><button id = 'make-payment'>Proceed To Checkout</button></a> -->
+							 <div id = 'paypal-button-container'></div>
 
 											
 
@@ -335,8 +336,8 @@
 
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
-						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Mill Furniture<span>.</span></a></div>
+						<p class="mb-4">Home of top quality furniture</p>
 
 						<ul class="list-unstyled custom-social">
 							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
@@ -352,7 +353,6 @@
 								<ul class="list-unstyled">
 									<li><a href="#">About us</a></li>
 									<li><a href="#">Services</a></li>
-									<li><a href="#">Blog</a></li>
 									<li><a href="#">Contact us</a></li>
 								</ul>
 							</div>
@@ -389,8 +389,8 @@
 				<div class="border-top copyright">
 					<div class="row pt-4">
 						<div class="col-lg-6">
-							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> <!-- License information: https://untree.co/license/ -->
-            </p>
+							
+            
 						</div>
 
 						<div class="col-lg-6 text-center text-lg-end">
@@ -412,10 +412,12 @@
 		<script src="/static/js/tiny-slider.js"></script>
 		<script src="/static/js/custom.js"></script>
 
+		<script src="https://www.paypal.com/sdk/js?client-id=ARnbnLK_XsXRbIf1UFSZtDVxs_YATT9dBjBB2LP4dmuR_NCIuqbWV6Ep1GUmAxGme21LYBN-JZMkiwel&currency=USD"></script>
+
 
 		<script type = "text/javascript">
 			
-			console.log('ram')
+			
 			var total = '{{order.get_cart_total}}'
 			console.log(total)
 			var form = document.getElementById('form')
@@ -433,12 +435,12 @@
 		
 			})
 		
-			var submitButton = document.getElementById("make-payment")
+			// var submitButton = document.getElementById("make-payment")
 			
-			submitButton.addEventListener("click",function e(){
-			    submmitFormData()
+			// submitButton.addEventListener("click",function e(){
+			//     submmitFormData()
 			
-			})
+			// })
 			
 			function submmitFormData(){
 				console.log("payment button clicked")
@@ -498,7 +500,7 @@
 		
 				document.cookie = 'cart=' + JSON.stringify(cart) +';domain=;path=/'
 		
-				window.location.href = "{% url 'store' %}"
+				window.location.href = "{% url 'thankyou' %}"
 				//reload page on each click
 				
 			})
@@ -524,5 +526,56 @@
 		
 		
 		</script>
+
+		
+
+		<script>
+
+			var total = '{{order.get_cart_total}}'
+			// Render the PayPal button into #paypal-button-container
+			paypal.Buttons({
+
+				style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay',
+                height: 40
+            	},
+				
+				
+				// Set up the transaction
+				createOrder: function(data, actions) {
+					return actions.order.create({
+						purchase_units: [{
+							amount: {
+								value: parseFloat(total).toFixed(2)
+							}
+						}]
+					});
+				},
+	
+				// Finalize the transaction
+				onApprove: function(data, actions) {
+					return actions.order.capture().then(function(orderData) {
+						// Successful capture! For demo purposes:
+						console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+						var transaction = orderData.purchase_units[0].payments.captures[0];
+						alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+						submmitFormData()
+
+	
+						// Replace the above to show a success message within this page, e.g.
+						// const element = document.getElementById('paypal-button-container');
+						// element.innerHTML = '';
+						// element.innerHTML = '<h3>Thank you for your payment!</h3>';
+						// Or go to another URL:  actions.redirect('thank_you.html');
+					});
+				}
+
+				
+	
+	
+		}).render('#paypal-button-container');
+	</script>
 
 {% endblock %}

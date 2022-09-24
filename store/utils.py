@@ -52,13 +52,14 @@ def cookieCart(request):
 
     
 def cartData(request):
-
+        
     if request.user.is_authenticated:
+        print(request.user)
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer = customer,complete = False)
         items = order.orderitem_set.all()
 
-          # _set.all allows us to do reverse search/query on the model
+        # _set.all allows us to do reverse search/query on the model
         #  _set.all allows is used on foreign key values for reverse query 
         #  _set.all is used to (reverse) query for that specific object
 
@@ -98,7 +99,7 @@ def guestOrder(request,data):
             customer = customer,
             complete = False
         )
-
+    
     for item in items:
         product = Product.objects.get(id = item['product']['id'])
 

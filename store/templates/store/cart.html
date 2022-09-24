@@ -80,7 +80,7 @@
         
                           </td>
                           <td>${{item.get_total}}</td>
-                          <td><a href="#" class="btn btn-black btn-sm">XX</a></td>
+                          <td><a data-product={{item.product.id}} data-action = 'clear' href="#" class="btn btn-black btn-sm removeall">XX</a></td>
                         </tr>
 						{% endfor %}
     
@@ -93,12 +93,10 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="row mb-5">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                      <button class="btn btn-black btn-sm btn-block">Update Cart</button>
-                    </div>
-                    <div class="col-md-6">
-                      <a href = "{% url 'store' %}"><button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button></a>
-                    </div>
+					<div class="col-md-6">
+						<a href = "{% url 'store' %}"><button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button></a>
+					  </div>
+                    
                   </div>
                   <div class="row">
                     <div class="col-md-12">
@@ -185,8 +183,8 @@
 
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
-						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Mill Furniture<span>.</span></a></div>
+						<p class="mb-4">Home of top quality furniture</p>
 
 						<ul class="list-unstyled custom-social">
 							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
@@ -202,7 +200,6 @@
 								<ul class="list-unstyled">
 									<li><a href="#">About us</a></li>
 									<li><a href="#">Services</a></li>
-									<li><a href="#">Blog</a></li>
 									<li><a href="#">Contact us</a></li>
 								</ul>
 							</div>
@@ -239,8 +236,7 @@
 				<div class="border-top copyright">
 					<div class="row pt-4">
 						<div class="col-lg-6">
-							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> <!-- License information: https://untree.co/license/ -->
-            </p>
+							
 						</div>
 
 						<div class="col-lg-6 text-center text-lg-end">
@@ -261,5 +257,28 @@
 		<script src="/static/js/bootstrap.bundle.min.js"></script>
 		<script src="/static/js/tiny-slider.js"></script>
 		<script src="/static/js/custom.js"></script>
+<!-- 
+		<script>
+			
+			var removeall = document.getElementsByClassName('removeall')
+		
+
+			for(i = 0;i<removeall.length;i++){
+				console.log("go come")
+
+				removeall[i].addEventListener('click',function(){
+
+					var productId = this.dataset.product
+					delete cart[productId]
+					
+					
+				// var datas = this.dataset.product
+			})
+			
+			document.cookie = 'cart=' + JSON.stringify(cart) +';domain=;path=/'
+		}
+
+
+		</script> -->
 
 {% endblock %}

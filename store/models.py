@@ -1,11 +1,29 @@
+
+from unicodedata import category
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 # class Room(models.Model):
+
     
+class User(AbstractUser):
+    name =   models.CharField(max_length=200,null = True)
+    email = models.EmailField(max_length=200,unique=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+
+class Category(models.Model):
+    name = models.CharField(max_length = 200,null=True)
+    type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Customer(models.Model):
-    user = models.OneToOneField(User, null = True, blank = True, on_delete =models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     name = models.CharField(max_length= 250,null=True)
     email = models.CharField(max_length=250, null = True)
 
@@ -17,10 +35,11 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7,decimal_places=2)
     digital = models.BooleanField(default = False, null = True, blank = True)
     image = models.ImageField(null = True, blank = True)
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL,null = True)
 
     def __str__(self):
         return self.name
-
+    
     @property
     def imageURL(self):
         try:

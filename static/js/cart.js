@@ -14,8 +14,8 @@ for(i = 0; i < updatebtns.length; i++){
             if(user == 'AnonymousUser'){
 
                 addCookieItem(productId,action)
-
-            }
+                
+            }   
             
             else{
                 
@@ -95,3 +95,43 @@ function updateUserOrder(productId,action){
     })
 
 }
+
+var removeall = document.getElementsByClassName('removeall')
+		
+
+			for(i = 0;i<removeall.length;i++){
+				console.log("dwak")
+
+				removeall[i].addEventListener('click',function(){
+                    var productId = this.dataset.product
+                    var action = this.dataset.action
+                    console.log("productId: ",productId,'Action: ', action)
+                
+					// delete cart[productId]
+					
+					
+				if (user == 'AnonymousUser'){
+
+                    
+            
+                    delete cart[productId] 
+                    
+                    document.cookie = 'cart=' + JSON.stringify(cart) +';domain=;path=/'
+
+
+                    location.reload()
+                            
+
+                }
+
+                else{
+
+                    updateUserOrder(productId,action)
+
+
+
+                }
+			})
+			
+			
+		}

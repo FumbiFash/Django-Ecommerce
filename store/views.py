@@ -8,21 +8,32 @@ from .models import *
 import json
 import datetime
 from .utils import cookieCart,cartData,guestOrder
+from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth.models import User
+from .models import User
+from .forms import MyUserCreationForm
+from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here. 
 
-def store(request):
-    products = Product.objects.all()
+def store(request): 
+
+    category = Category.objects.all()
+    q = request.GET.get('q') if request.GET.get('q') != None else ""
+
+    products = Product.objects.filter(Q(category__name__icontains=q))
+                                        
     
     cartdata = cartData(request)
     items = cartdata['items']
     order = cartdata['order']
     cartitems = cartdata['cartitems']
-        
-       
-        
 
-    context = {"products":products,"cartitems":cartitems}
+
+
+    
+    context = {"products":products,"cartitems":cartitems,"category":category}
     return render(request,"store/shop.html",context)
 
 def cart(request):
@@ -91,6 +102,9 @@ def updatedItem(request):
     elif action == 'remove':
         orderItem.quantity = orderItem.quantity - 1
 
+    elif action == 'clear':
+        orderItem.quantity = 0
+
     orderItem.save()
 
     if orderItem.quantity <=0:
@@ -119,13 +133,6 @@ def processOrder(request):
 
         # order.save()    
 
-        
-
-       
-    
-        
-
-        # 
         # Below line is wrong becuase it says, if shipping address exists, then ammend the address, when i should actually just create a new address for the customer
         # shippingadd, created = ShippingAddress.objects.get_or_create(customer = customer)
 
@@ -188,20 +195,116 @@ def processOrder(request):
 
     print("request: ", request.COOKIES)
      
-     
-
-
-     
-
     return JsonResponse(" SUCCESS : payment was submitted",safe=False)
 
 def thankyou(request):
+
 
     return render(request,"store/thankyou.html") 
 
 
 def services(request):
+    products = Product.objects.all()
+    cartdata = cartData(request)
+    cartitems = cartdata['cartitems']
+    context = {'products':products,"cartitems":cartitems}
+    return render(request,"store/services.html",context) 
 
-    return render(request,"store/services.html") 
+
+def about(request):
+    cartdata = cartData(request)
+    cartitems = cartdata['cartitems']
+    context = {'cartitems':cartitems}
+    return render(request,"store/about.html",context) 
+
+def contact(request):
+
+    cartdata = cartData(request)
+    cartitems = cartdata['cartitems']
+    context = {'cartitems':cartitems}
+
+
+    return render(request,"store/contact.html",context) 
+
+def login_user(request):
+
+    page = "login"
+    cartdata = cartData(request)
+    cartitems = cartdata['cartitems']
+
+    
+
+    if request.user.is_authenticated:
+        return redirect('store')
+
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = authenticate(request,username = email, password = password)
+
+        if user is not None:
+            login(request,user)
+            return redirect('store')
+            
+        else:
+            print("whats wrong")
+
+
+    context = {"page":page,"cartitems":cartitems}
+    return render(request,'store/index.html',context)
+
+def createUser(request):
+
+    # form = MyUserCreationForm()
+
+
+
+    # if request.method == "POST":
+    #         form = MyUserCreationForm(request.POST)
+
+    #         if form.is_valid():
+            
+    #             user = form.save(commit = False)
+    #             user.username = user.username.lower()
+    #             user.save()
+    #             login(request,user)
+    #             return redirect('store')
+    #         else:
+    #             messages.error(request,'some error in registration')
+    
+    # context = {"form" : form}
+
+    cartdata = cartData(request)
+    cartitems = cartdata['cartitems']
+    form = MyUserCreationForm()
+
+    if request.method == "POST":
+        form = MyUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit = False)
+            user.username = user.username.lower()
+            user.save()
+            customer = Customer.objects.create(user = user, name = user.username, email = user.email)
+            login(request,user)
+            return redirect("store")
+        else:
+            messages.error(request,"Error in registration")
+    context = {"form":form,"cartitems":cartitems}
+        
+
+    return render(request,"store/index.html",context)
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('store') 
+
+# def clearData(request):
+
+#     data = json.loads()
+#     data
+
+
 
 

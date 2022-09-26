@@ -1,15 +1,7 @@
 djangorestframework
-fonttools
-gmpy2
 gunicorn
-h5py
 heroku
-jupyter
-jupyterlab
 path
-pathlib2
-pip-chill
-pytest
 virtualenv
 whitenoise
 

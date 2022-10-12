@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!bfdrhy)k_+=nz1pp%x2$cj9$=00pq+10r^3awh$kl1@bvve0-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['ecommfurnitureapp.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'store.apps.StoreConfig'
 ]
 
@@ -122,7 +123,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -139,3 +142,20 @@ MEDIA_ROOT = BASE_DIR/"static/images"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AWS_ACCESS_KEY_ID = 'AKIAUSTDOTTBKFAHWIVL'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'fumbibucket-ecomm'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+AWS_S3_REGION_NAME = 'eu-west-2' 
+AWS_S3_SIGNATURE_VERSION = 's3v4' 
+ 
+AWS_QUERYSTRING_AUTH = False 
+ 
+AWS_S3_REGION_NAME = 'eu-west-2' 
+ 

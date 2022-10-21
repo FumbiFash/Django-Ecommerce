@@ -197,6 +197,9 @@ def processOrder(request):
      
     return JsonResponse(" SUCCESS : payment was submitted",safe=False)
 
+
+    
+
 def thankyou(request):
 
 

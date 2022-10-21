@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!bfdrhy)k_+=nz1pp%x2$cj9$=00pq+10r^3awh$kl1@bvve0-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ecommfurnitureapp.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -127,13 +127,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = "/images/"
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static"
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 
 MEDIA_ROOT = BASE_DIR/"static/images"
 

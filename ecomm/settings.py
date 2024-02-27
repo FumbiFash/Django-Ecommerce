@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!bfdrhy)k_+=nz1pp%x2$cj9$=00pq+10r^3awh$kl1@bvve0-'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -140,9 +140,9 @@ MEDIA_ROOT = BASE_DIR/"static/images"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_ACCESS_KEY_ID = 'AKIAUSTDOTTBKFAHWIVL'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'fumbibucket-ecomm'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_STORAGE_BUCKET_NAME = ''
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
